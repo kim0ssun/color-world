@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, Typography, Button, IconButton, Fab} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button, IconButton, Fab, Box } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import firebase from '../Firebase';
@@ -42,12 +42,16 @@ export default props => {
           <IconButton edge="start"  color="inherit" aria-label="menu" className={classes.menuButton}>
             <MenuIcon />
           </IconButton>
-          <Link to={"/"} className={classes.title}>Home</Link>
+          
           <Typography variant="h6" className={classes.title}>
-            작  품
+            Color World
           </Typography>
-          {currentUser && <Typography>{`${currentUser.id} 님 안녕하세요.`}</Typography>}
-          <Fab color="secondary" variant="extended" size="small">견적문의</Fab>
+          
+          {currentUser 
+            ? <Typography>{`${currentUser.id} 님 안녕하세요.`}</Typography>
+            : <Button color="inherit">Login</Button>
+          }
+            {/* <Fab color="secondary" variant="extended" size="small">견적문의</Fab> */}
         </Toolbar>
       </AppBar>
     </div>
