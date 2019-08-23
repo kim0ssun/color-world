@@ -34,7 +34,7 @@ export default props => {
       <ImageGallery showThumbnails={false} items={images} autoPlay={true} slideInterval={4000} />
     
       <Box style={{position: 'relative'}}>
-        <ul style={{position: ''}}>
+        {/* <ul style={{position: ''}}>
           {data && data.map(doc => {
             const { id, title, url, description, categories } = doc.data(); 
 
@@ -44,7 +44,7 @@ export default props => {
               </li>
             )
           })}
-        </ul>
+        </ul> */}
 
       </Box>
     </div>  
