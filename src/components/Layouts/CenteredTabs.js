@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Paper, Tabs, Tab, Typography, Box } from '@material-ui/core';
+import ImageGridList from './ImageGridList';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -25,10 +26,8 @@ function a11yProps(index) {
   };
 }
 
-
-
-export default function CenteredTabs() {
-  const [value, setValue] = React.useState(0);
+export default function CenteredTabs({ galleryData }) {
+  const [value, setValue] = React.useState(1);
 
   function handleChange(event, newValue) {
     setValue(newValue);
@@ -52,7 +51,8 @@ export default function CenteredTabs() {
         About
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Gallery
+        <ImageGridList galleryData={galleryData} />
+        {console.log(galleryData)}
       </TabPanel>
     </Fragment>
   );

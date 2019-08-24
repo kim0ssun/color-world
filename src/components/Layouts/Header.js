@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button, IconButton, Fab, Box } from '@mate
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
 import firebase from '../Firebase';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,6 +18,11 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     textDecoration: 'none'
   },
+  fab : {
+    position: 'fixed',
+    right: 10,
+    bottom: 20
+  }
 }));
 
 export default props => {
@@ -51,7 +57,7 @@ export default props => {
             ? <Typography>{`${currentUser.id} 님 안녕하세요.`}</Typography>
             : <Button color="inherit">Login</Button>
           }
-            {/* <Fab color="secondary" variant="extended" size="small">견적문의</Fab> */}
+          <Fab color="secondary" variant="round" size="medium" className={classes.fab}><ContactMailIcon /></Fab>
         </Toolbar>
       </AppBar>
     </div>
