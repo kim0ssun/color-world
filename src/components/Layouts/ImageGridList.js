@@ -46,7 +46,7 @@ export default function ImageGridList({galleryData}) {
   }
 
   const slideRenderer = ({ index, key}) => {
-    if (index < 0) return
+    if (index < 0) index = galleryData.length + index;
     console.log( ' initial index: '+index);
     console.log( 'mode(index, 100) => ' + mod(index, 100));
     console.log('length: '+ galleryData.length)

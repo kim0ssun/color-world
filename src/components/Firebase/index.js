@@ -2,13 +2,13 @@ import firebase from 'firebase';
 import 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAA0KrMLcJ4oJdSjkagaqeQFnvCwAowheo",
-  authDomain: "color-world-94e8a.firebaseapp.com",
-  databaseURL: "https://color-world-94e8a.firebaseio.com",
-  projectId: "color-world-94e8a",
+  apiKey: "AIzaSyAV8f2cgVd1LzQtBRVNCzcsQGPw9eyW1Bo",
+  authDomain: "color-world-a8c15.firebaseapp.com",
+  databaseURL: "https://color-world-a8c15.firebaseio.com",
+  projectId: "color-world-a8c15",
   storageBucket: "",
-  messagingSenderId: "235012913757",
-  appId: "1:235012913757:web:4c2df28e8c553934"
+  messagingSenderId: "630484036040",
+  appId: "1:630484036040:web:7e923eb3875d70377f78fd"
 };
 firebase.initializeApp(firebaseConfig);
 
