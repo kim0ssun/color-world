@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, IconButton, Fab, Box } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import firebase from '../Firebase';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 
@@ -29,6 +29,7 @@ export default props => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  let history = useHistory();
  
 
   useEffect(() => {
@@ -40,6 +41,10 @@ export default props => {
       }
     });
   }, []);
+
+  const handleClick = (e) => {
+    history.push("/contact")
+  }
 
   return (
     <div className={classes.root}>
@@ -57,7 +62,15 @@ export default props => {
             ? <Typography>{`${currentUser.id} 님 안녕하세요.`}</Typography>
             : <Button color="inherit">Login</Button>
           }
-          <Fab color="secondary" variant="round" size="medium" className={classes.fab}><ContactMailIcon /></Fab>
+          <Fab 
+            color="secondary" 
+            variant="round" 
+            size="medium" 
+            className={classes.fab}
+            onClick={handleClick}
+            >
+              <ContactMailIcon />
+          </Fab>
         </Toolbar>
       </AppBar>
     </div>
