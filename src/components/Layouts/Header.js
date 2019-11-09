@@ -16,12 +16,19 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
     color: 'white',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    '&:hover': {
+      cursor: 'pointer',
+      
+    }
   },
   fab : {
     position: 'fixed',
     right: 10,
     bottom: 20
+  },
+  home: {
+    
   }
 }));
 
@@ -54,7 +61,7 @@ export default props => {
             <MenuIcon />
           </IconButton>
           
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} onClick={ () => history.push('/') } >
             Color World
           </Typography>
           

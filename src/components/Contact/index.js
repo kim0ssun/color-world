@@ -6,11 +6,17 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Button, Box } from '@material-ui/core';
 import { useHistory } from 'react-router';
 
+
 export default props => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up('md'));
   let history = useHistory();
   const [data, setData] = useState([]);
+
+  const MaskedName = ({ value }) => {
+    const modified = value.substr(0, 1) + '*' + value.substr(2, 2);
+    return <span>{modified}</span>
+  }
   
   const columnsDense = [
     {
@@ -35,6 +41,11 @@ export default props => {
      options: {
       filter: false,
       sort: false,
+      customBodyRender: (value, tableMeta, updateValue) => (
+        <MaskedName
+          value={value}
+        />
+      )
      }
     },
     {
@@ -69,8 +80,21 @@ export default props => {
      options: {
       filter: false,
       sort: false,
+      customBodyRender: (value, tableMeta, updateValue) => (
+        <MaskedName
+          value={value}
+        />
+      )
      }
     },
+    {
+      name: "timestamp",
+      label: "날짜",
+      options: {
+       filter: false,
+       sort: false,
+      },
+     },
    ];
 
    const options = {
@@ -95,17 +119,17 @@ export default props => {
    };
 
    useEffect(() => {
-      const snapshotData = [];
-      firebase.firestore().collection("board/general/data").orderBy("id", "desc").limit(100).get()
-        .then(snapshot => {          
+      
+      const unsubscribe = firebase.firestore().collection("board/general/data").orderBy("id", "desc").limit(100).onSnapshot( snapshot => {   
+          const snapshotData = [];       
           snapshot.forEach(doc => {
             snapshotData.push(doc.data())
           })
-        }).catch(err => console.log(err))
-        .then(() => {
-          console.log("data: ", snapshotData);
           setData(snapshotData);
-        })
+        }, err => { console.log(err) }
+      )
+
+      return () => unsubscribe()
    }, []);
 
   const handleClick = (e) => {
