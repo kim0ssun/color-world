@@ -6,7 +6,7 @@ const firebaseConfig = {
   authDomain: "color-world-a8c15.firebaseapp.com",
   databaseURL: "https://color-world-a8c15.firebaseio.com",
   projectId: "color-world-a8c15",
-  storageBucket: "",
+  storageBucket: "color-world-a8c15.appspot.com",
   messagingSenderId: "630484036040",
   appId: "1:630484036040:web:7e923eb3875d70377f78fd"
 };

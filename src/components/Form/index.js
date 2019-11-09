@@ -219,7 +219,9 @@ export default props => {
           localization={{
             locale: 'ko',
           }}
+          
           toolbar={{
+            options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link','emoji', 'image', 'remove', 'history'],
             inline: { inDropdown: true },
             list: { inDropdown: true },
             textAlign: { inDropdown: true },
@@ -233,31 +235,22 @@ export default props => {
               previewImage: true,
               urlEnabled: true,
               uploadCallback: (file) => {
-                console.log("uploadCallback=> "+file+"/"+window.URL.createObjectURL(file));
-                return new Promise(
-                  (resolve, reject) => {
-                    var reader=new FileReader();
-                    resolve({ data: { link: "http://localhost:3000/c7cf367b-fc34-4bb0-bfaf-06bd06b9014d" }});
-                    // resolve({ data: { link: "https://firebasestorage.googleapis.com/v0/b/color-world-a8c15.appspot.com/o/images%2Fsingle%2F1.JPG?alt=media&token=2041ac23-22b6-46fe-a18c-c27a378d070f" }});
-                    reader.onloadend = function() {
-                      // Meteor.call('fileStorage.uploadFile',reader.result,file.name,file.type,(err,response)=>{
-                      //     console.log(response)
-                      //    if(err){
-                      //      reject(err)
-                      //    }
-            
-                      //    resolve({ data: { link: response.data.url } });
-                      // })
-                    }
-            
-                    // reader.readAsDataURL(file);
-                  }
-                );
-              }
-            },
-            embedded: {
-              embedCallback: () => {
-                
+
+                return new Promise( (resolve, reject) => {
+                  console.log("uploadCallback=> "+file.name);
+                  const storageRef = firebase.storage().ref();
+                  const uploadImageRef = storageRef.child(`uploadImages/${file.name}`);
+                  console.log(`uploadImages/${values.email}${values.password}${file.name}`);
+                  uploadImageRef.put(file).then( snapshot => {
+                    snapshot.ref.getDownloadURL().then((url) => {
+                      console.log('url: ',url)
+                      resolve({ data: { link: url}}); 
+                    });
+                  }).catch(err => {
+                    console.log(err);
+                    reject(err);
+                  });
+                });  
               },
             },
           }}
