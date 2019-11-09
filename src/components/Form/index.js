@@ -58,7 +58,7 @@ export default props => {
         }
         break;
       case "name":
-        if (event.target.value.length > 6) {
+        if (event.target.value.length > 15) {
           setName(values["name"]);
         } else {
           values["name"] = event.target.value;
@@ -147,7 +147,7 @@ export default props => {
       />
       <TextField 
         id="name"
-        label="성명(6자 이하)"
+        label="카카오ID 또는 전화번호"
         required={true}
         value={name}
         inputRef={nameRef}
@@ -219,6 +219,7 @@ export default props => {
           localization={{
             locale: 'ko',
           }}
+          placeholder="전체 디자인을 자세하게 적어주세요."
           toolbar={{
             inline: { inDropdown: true },
             list: { inDropdown: true },
