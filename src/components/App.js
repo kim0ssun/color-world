@@ -5,6 +5,7 @@ import About from './About';
 import Work from './Work';
 import Contact from './Contact';
 import Form from './Form';
+import Reply from './Reply';
 import { Header, Footer, CenteredTabs } from './Layouts';
 import axios from 'axios';
 
@@ -61,7 +62,12 @@ function App() {
               <Form />
             )
           }} />
-
+          <Route path="/reply/:id/:password" render={() => {
+            setFlag(true);
+            return (
+              <Reply />
+            )
+          }} />
         </Switch>
         { !flag ? <CenteredTabs galleryData={galleryData} /> : null}
         <Footer />

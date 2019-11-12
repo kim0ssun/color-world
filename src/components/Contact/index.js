@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import firebase from '../Firebase';
 import MUIDataTable from "mui-datatables";
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Button, Box } from '@material-ui/core';
 import { useHistory } from 'react-router';
+// import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 export default props => {
@@ -12,6 +19,9 @@ export default props => {
   const matches = useMediaQuery(theme.breakpoints.up('md'));
   let history = useHistory();
   const [data, setData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+  const passwordRef = useRef(null);
 
   const MaskedName = ({ value }) => {
     const modified = value.substr(0, 1) + '*' + value.substr(2, 2);
@@ -87,14 +97,6 @@ export default props => {
       )
      }
     },
-    {
-      name: "timestamp",
-      label: "날짜",
-      options: {
-       filter: false,
-       sort: false,
-      },
-     },
    ];
 
    const options = {
@@ -110,7 +112,9 @@ export default props => {
       selectableRowsOnClick: false,
       elevation: 0,
       onRowClick: (rowData, rowMeta) => {
-        console.log("onRowsSelect => " + rowData);
+        console.log('id: '+ data[rowMeta.dataIndex].id);
+        setIndex(rowMeta.dataIndex);
+        setOpen(true);
       },
       customSort: (data, colIndex, order) => {
         console.log(`data: ${data}, colIndex: ${colIndex}, order: ${order}`);
@@ -136,6 +140,17 @@ export default props => {
     history.push("/form")
   };
 
+
+  const handleClose = () => {
+    setOpen(false);
+    const inputText = passwordRef.current.value.trim();
+    console.log('password => '+ inputText );
+    if (inputText === data[index].password) {
+      console.log('password matched!!' );
+      history.push(`/reply/${data[index].id}/${data[index].password}`);
+    }
+  }
+
   return (
     <div>
       <MUIDataTable 
@@ -147,6 +162,28 @@ export default props => {
       <Box textAlign="center" p={2} size="large" >
         <Button variant="contained" color="primary" onClick={handleClick} >글쓰기</Button>
       </Box>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">비밀번호를 입력하세요</DialogTitle>
+        <DialogContent>
+          
+          <TextField
+            autoFocus
+            margin="dense"
+            id="password"
+            label="password"
+            type="password"
+            inputRef={passwordRef}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            취소
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            들어가기
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 

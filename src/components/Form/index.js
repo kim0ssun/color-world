@@ -5,8 +5,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { EditorState, convertToRaw, convertToHTML } from 'draft-js';
-import MyEditor from './MyEditor';
+import { EditorState, convertToRaw, convertToHTML , AtomicBlockUtils } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -27,7 +26,6 @@ export default props => {
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const values = {
     title,
@@ -38,7 +36,6 @@ export default props => {
 
   const titleRef = useRef(null);
   const nameRef = useRef(null);
-  const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
   useEffect(() => {
@@ -79,24 +76,27 @@ export default props => {
   };
 
   const onChange = (editorState) => {
+
     const contentState = editorState.getCurrentContent();
-    setContent(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+    setContent(JSON.stringify(convertToRaw(contentState)));
+    values['content'] = content;
     setEditorState(editorState);
+    
   }
 
   const handleSubmit = (e) => {
-    const generalRef = db.collection("board").doc("general");
-    const dataRef = db.collection("board/general/data").doc();
-    let autoNum;
     e.preventDefault();
+    const timestamp = new Date().toLocaleDateString('ko-KR');
+    const generalRef = db.collection("board").doc("general");
+    const dataRef = db.collection("board/general/data").doc(`${timestamp}${values.name}${values.password}`);
+    let autoNum;
     
+    console.log("values: ", values);
     generalRef.get().then(doc => {
       autoNum = doc.data().autoNum + 1;
       generalRef.update({
         "autoNum": firebase.firestore.FieldValue.increment(1),
       });
-      console.log("values: ", values);
-      const timestamp = new Date().toLocaleDateString('ko-KR');
       const data = {
         ...values,
         id: autoNum,
@@ -219,10 +219,11 @@ export default props => {
                   console.log("uploadCallback=> "+file.name);
                   const storageRef = firebase.storage().ref();
                   const uploadImageRef = storageRef.child(`uploadImages/${file.name}`);
-                  console.log(`uploadImages/${values.email}${values.password}${file.name}`);
+                  console.log(`uploadImages/${file.name}`);
                   uploadImageRef.put(file).then( snapshot => {
                     snapshot.ref.getDownloadURL().then((url) => {
-                      console.log('url: ',url)
+                      console.log(' downloadUrl: ',url);
+                      
                       resolve({ data: { link: url}}); 
                     });
                   }).catch(err => {
@@ -243,8 +244,3 @@ export default props => {
     </Box>
   )
 }
-// const Embed = ({ block, contentState }) => {
-//   const entity = contentState.getEntity(block.getEntityAt(0));
-//   const { src, height, width } = entity.getData();
-//   return (<iframe height={height} width={width} src={src} frameBorder="0" allowFullScreen title="Wysiwyg Embedded Content" />);
-// };
