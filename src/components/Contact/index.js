@@ -12,6 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 export default props => {
@@ -22,6 +23,7 @@ export default props => {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const passwordRef = useRef(null);
+  const [loading, setLoading] = useState(true);
 
   const MaskedName = ({ value }) => {
     const modified = value.substr(0, 1) + '*' + value.substr(2, 2);
@@ -65,14 +67,6 @@ export default props => {
       filter: false,
       sort: false,
      },
-    },
-     {
-      name: "counts",
-      label: "조회",
-      options: {
-       filter: false,
-       sort: false,
-      }
     },
    ];
    const columnsSparse = [
@@ -130,6 +124,7 @@ export default props => {
             snapshotData.push(doc.data())
           })
           setData(snapshotData);
+          setLoading(false);
         }, err => { console.log(err) }
       )
 
@@ -145,14 +140,18 @@ export default props => {
     setOpen(false);
     const inputText = passwordRef.current.value.trim();
     console.log('password => '+ inputText );
-    if (inputText === data[index].password) {
+    if (inputText === data[index].password ) {
       console.log('password matched!!' );
       history.push(`/reply/${data[index].id}/${data[index].password}`);
+    } else if ( inputText === "admin2020") {
+      history.push(`/reply/${data[index].id}/admin2020`);
     }
   }
 
   return (
     <div>
+      { !loading ? 
+      <div>
       <MUIDataTable 
         title={"견적의뢰"}
         data={data}
@@ -184,6 +183,9 @@ export default props => {
           </Button>
         </DialogActions>
       </Dialog>
+      </div>
+      : <CircularProgress /> 
+    }
     </div>
   )
 

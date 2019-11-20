@@ -65,10 +65,10 @@ export default props => {
             Color World
           </Typography>
           
-          {currentUser 
+          {/* {currentUser 
             ? <Typography>{`${currentUser.id} 님 안녕하세요.`}</Typography>
             : <Button color="inherit">Login</Button>
-          }
+          } */}
           <Fab 
             color="secondary" 
             variant="round" 

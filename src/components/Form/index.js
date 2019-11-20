@@ -86,7 +86,7 @@ export default props => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const timestamp = new Date().toLocaleDateString('ko-KR');
+    const timestamp = new Date().toLocaleString();
     const generalRef = db.collection("board").doc("general");
     const dataRef = db.collection("board/general/data").doc(`${timestamp}${values.name}${values.password}`);
     let autoNum;
@@ -102,6 +102,7 @@ export default props => {
         id: autoNum,
         timestamp,
         counts: 1,
+        isReply: false,
       }
       dataRef.set(data)
         .then(doc => {
@@ -182,10 +183,6 @@ export default props => {
         p={2}
         style={{backgroundColor: "#dfdfdf", color: "#000", minHeight: "200px"}}
       >
-        {/* <MyEditor
-          editorState={editorState}
-          onChange={onChange}
-        /> */}
         <Editor 
           // wrapperClassName={}
           editorStyle={styles.editorClass}
