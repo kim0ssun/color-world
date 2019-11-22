@@ -1,52 +1,29 @@
-import React, { useState, useEffect, Fragment } from 'react'
-import firebase from '../Firebase';
+import React from 'react'
 import ImageGallery  from 'react-image-gallery';
-import { Box } from '@material-ui/core'
 import "react-image-gallery/styles/css/image-gallery.css"
 
 export default props => {
-  const [data, setData] = useState([]);
   const images = [
     {
-      original: 'https://images.unsplash.com/photo-1544511916-0148ccdeb877?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&fit=crop&w=1000&h=500'
+      original: 'https://firebasestorage.googleapis.com/v0/b/color-world-a8c15.appspot.com/o/images%2Fsingle%2F13.JPG?alt=media&token=97e5f20e-7f9a-46db-a81b-e55a9693e2a7'
     },
     {
-      original: 'https://images.unsplash.com/photo-1544572571-ab94fd872ce4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&fit=crop&w=1000&h=500'
+      original: 'https://firebasestorage.googleapis.com/v0/b/color-world-a8c15.appspot.com/o/images%2Fsingle%2F4.JPG?alt=media&token=db286324-e5b7-4e6e-bd39-c034eb3586c3'
     },
     {
-      original: 'https://images.unsplash.com/reserve/bnW1TuTV2YGcoh1HyWNQ_IMG_0207.JPG?ixlib=rb-1.2.1&fit=crop&w=1000&h=500'
+      original: 'https://firebasestorage.googleapis.com/v0/b/color-world-a8c15.appspot.com/o/images%2Fsingle%2F1.JPG?alt=media&token=2041ac23-22b6-46fe-a18c-c27a378d070f'
     },
+    {
+      original: 'https://firebasestorage.googleapis.com/v0/b/color-world-a8c15.appspot.com/o/images%2Fmultiple%2FIMG_1981.JPG?alt=media&token=313689c1-8ea1-4981-9143-8f26db3f864c'
+    },
+    {
+      original: 'https://firebasestorage.googleapis.com/v0/b/color-world-a8c15.appspot.com/o/images%2Fmultiple%2FIMG_9236.JPG?alt=media&token=d5ef6a70-d8aa-4983-86fa-e6dc63b86a7b'
+    }
   ]
-
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection('works')
-      .onSnapshot(snapshot => {
-        setData(snapshot.docs);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   return (
     <div style={{position: 'relative'}}>
       <ImageGallery showThumbnails={false} items={images} autoPlay={true} slideInterval={4000} />
-    
-      <Box style={{position: 'relative'}}>
-        {/* <ul style={{position: ''}}>
-          {data && data.map(doc => {
-            const { id, title, url, description, categories } = doc.data(); 
-
-            return (
-              <li key={id}>
-                {`${title}/${description}`}
-              </li>
-            )
-          })}
-        </ul> */}
-
-      </Box>
     </div>  
   );
 }

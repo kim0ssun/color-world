@@ -6,6 +6,8 @@ import { Dialog, DialogContent } from '@material-ui/core';
 import  SwipeableViews from 'react-swipeable-views';
 import { virtualize, bindKeyboard } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,10 +32,12 @@ const VirtualizeSwipeableViews = bindKeyboard(virtualize(SwipeableViews));
 
 
 export default function ImageGridList({galleryData}) {
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [dialogId, setDialogId] = useState(0);
   const [dialogsmall, setDialogsmall] = useState('');
   const classes = useStyles();
+  const matches = useMediaQuery(theme.breakpoints.up('md'));
 
   const handleDialog = (id, small) => {
     setDialogId(id);
@@ -50,14 +54,17 @@ export default function ImageGridList({galleryData}) {
     console.log( ' initial index: '+index);
     console.log( 'mode(index, 100) => ' + mod(index, 100));
     console.log('length: '+ galleryData.length)
-    // const data = galleryData.find((item) => {
-      
-    //   return item.id === index
-    // });
-    // console.log('data: '+data)
+
     return (
-      <div className={classes.slide} key={key}> 
-        <img src={galleryData[index % galleryData.length].small} alt="" style={{maxWidth: '100vw'}}/>
+      <div style={{
+        height: `${ matches ? "50vh" : "40vh" }`,
+        width: `${ matches ? "50vw" : "70vw"}`,
+        backgroundImage: `url("${galleryData[index % galleryData.length].small}")`,
+        backgroundSize: '100% 100%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        }} key={key}
+      > 
       </div>
     )
   }
@@ -68,7 +75,7 @@ export default function ImageGridList({galleryData}) {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={100} className={classes.gridList} cols={3}>
+      <GridList cellHeight={matches ? 150 : 100 } className={classes.gridList} cols={ matches ? 4 : 3 }>
         {galleryData.map( ({ id, thumb, small }) => (
           <GridListTile key={id} cols={1}>
             <img src={thumb} alt={''} onClick={() => handleDialog(id, small)} />
@@ -85,8 +92,7 @@ export default function ImageGridList({galleryData}) {
             index={dialogId}
             onChangeIndex={handleChangeIndex}
             slideRenderer={slideRenderer}
-            >
-
+          >
           </VirtualizeSwipeableViews>
         </DialogContent>
       </Dialog>

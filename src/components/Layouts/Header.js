@@ -5,6 +5,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useHistory } from 'react-router';
 import firebase from '../Firebase';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
+import List from '@material-ui/core/List';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import { logicalExpression } from '@babel/types';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,18 +63,13 @@ export default props => {
     <div className={classes.root}>
       <AppBar position="sticky">
         <Toolbar>
-          <IconButton edge="start"  color="inherit" aria-label="menu" className={classes.menuButton}>
+          <IconButton edge="start" onClick={ () => setOpen(true)} color="inherit" aria-label="menu" className={classes.menuButton}>
             <MenuIcon />
           </IconButton>
           
           <Typography variant="h6" className={classes.title} onClick={ () => history.push('/') } >
             Color World
           </Typography>
-          
-          {/* {currentUser 
-            ? <Typography>{`${currentUser.id} 님 안녕하세요.`}</Typography>
-            : <Button color="inherit">Login</Button>
-          } */}
           <Fab 
             color="secondary" 
             variant="round" 
@@ -80,6 +81,36 @@ export default props => {
           </Fab>
         </Toolbar>
       </AppBar>
+      <SwipeableDrawer
+        anchor="left"
+        open={open}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
+      >
+        <Box onClick={() => setOpen(false)} style={{width: 180}} >
+          <Box p={0} m={1} style={{
+            backgroundImage: `url("images/logo.jpg")`,
+            backgroundSize: '150px 100px',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundOrigin: 'content-box',
+            height: 100,
+          }} >
+          </Box>
+          <Divider />
+          <List>
+            {['Home', 'About', 'Gallery', '견적문의'].map((item, index) => {
+              
+              return (
+                <ListItem button key={index} style={{textAlign: 'center',}}>
+                  <ListItemText>{item}</ListItemText>
+                </ListItem>
+              )
+            })}
+          </List>
+          <Divider />
+        </Box>
+      </SwipeableDrawer>
     </div>
   );
 
