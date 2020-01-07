@@ -103,6 +103,7 @@ export default props => {
         timestamp,
         counts: 1,
         isReply: false,
+        questionDate: timestamp,
       }
       dataRef.set(data)
         .then(doc => {

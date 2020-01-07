@@ -59,6 +59,11 @@ export default props => {
     history.push("/contact")
   }
 
+  const handleItemClick = (index) => {
+    const routes = ["/", "/about", "/", "/contact"];
+    history.push(routes[index]);
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="sticky">
@@ -89,7 +94,7 @@ export default props => {
       >
         <Box onClick={() => setOpen(false)} style={{width: 180}} >
           <Box p={0} m={1} style={{
-            backgroundImage: `url("images/logo.jpg")`,
+            backgroundImage: `url("logo.jpg")`,
             backgroundSize: '150px 100px',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
@@ -102,7 +107,7 @@ export default props => {
             {['Home', 'About', 'Gallery', '견적문의'].map((item, index) => {
               
               return (
-                <ListItem button key={index} style={{textAlign: 'center',}}>
+                <ListItem button key={index} style={{textAlign: 'center',}} onClick={() => handleItemClick(index)} >
                   <ListItemText>{item}</ListItemText>
                 </ListItem>
               )

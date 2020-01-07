@@ -54,10 +54,14 @@ export default props => {
       filter: false,
       sort: false,
       customBodyRender: (value, tableMeta, updateValue) => (
-        <MaskedName
-          value={value}
-        />
-      )
+        <Box 
+          style={{minWidth: '40px',}}
+        >
+          <MaskedName
+            value={value}
+          />
+        </Box>
+      ),
      }
     },
     {
@@ -80,15 +84,20 @@ export default props => {
     },
     {
      name: "name",
-     label: "작성자",
+     label: "이름",
      options: {
       filter: false,
       sort: false,
+      align: 'center',
       customBodyRender: (value, tableMeta, updateValue) => (
-        <MaskedName
-          value={value}
-        />
-      )
+        <Box 
+          style={{minWidth: '40px',}}
+        >
+          <MaskedName
+            value={value}
+          />
+        </Box>
+      ),
      }
     },
    ];
@@ -113,12 +122,32 @@ export default props => {
       customSort: (data, colIndex, order) => {
         console.log(`data: ${data}, colIndex: ${colIndex}, order: ${order}`);
         return data;
-      }
+      },
+      textLabels: {
+        body: {
+          noMatch: "데이터가 없네요.",
+          toolTip: "정렬",
+          columnHeaderTooltip: column => `${column.label} 정렬`
+        },
+        pagination: {
+          next: "다음 페이지",
+          previous: "이전 페이지",
+          rowsPerPage: "페이지당 줄수",
+          displayRows: "/",
+        },
+        toolbar: {
+          search: "검색",
+          downloadCsv: "CSV 다운",
+          print: "출력",
+          viewColumns: "행보기",
+          filterTable: "테이블 필터",
+        },
+      },
    };
 
    useEffect(() => {
       
-      const unsubscribe = firebase.firestore().collection("board/general/data").orderBy("id", "desc").limit(100).onSnapshot( snapshot => {   
+      const unsubscribe = firebase.firestore().collection("board/general/data").orderBy("questionDate", "desc").limit(100).onSnapshot( snapshot => {   
           const snapshotData = [];       
           snapshot.forEach(doc => {
             snapshotData.push(doc.data())
@@ -184,7 +213,7 @@ export default props => {
         </DialogActions>
       </Dialog>
       </div>
-      : <CircularProgress /> 
+      : <Box align="center" p={20} ><CircularProgress /></Box> 
     }
     </div>
   )

@@ -57,8 +57,8 @@ export default function ImageGridList({galleryData}) {
 
     return (
       <div style={{
-        height: `${ matches ? "50vh" : "40vh" }`,
-        width: `${ matches ? "50vw" : "70vw"}`,
+        height: `${ matches ? "60vh" : "40vh" }`,
+        width: `${ matches ? "60vw" : "80vw"}`,
         backgroundImage: `url("${galleryData[index % galleryData.length].small}")`,
         backgroundSize: '100% 100%',
         marginLeft: 'auto',
@@ -75,7 +75,7 @@ export default function ImageGridList({galleryData}) {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={matches ? 150 : 100 } className={classes.gridList} cols={ matches ? 4 : 3 }>
+      <GridList cellHeight={matches ? 150 : 100 } className={classes.gridList} cols={ matches ? 5 : 4 }>
         {galleryData.map( ({ id, thumb, small }) => (
           <GridListTile key={id} cols={1}>
             <img src={thumb} alt={''} onClick={() => handleDialog(id, small)} />

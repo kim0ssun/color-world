@@ -22,6 +22,11 @@ const useStyles = makeStyles(theme => ({
     margin: '20px',
     padding: '20px'
   },
+  replyAdmin: {
+    margin: '20px',
+    padding: '20px',
+    backgroundColor: '#eee',
+  },
   editor: {
     backgroundColor: "#eee",
     minHeight: '200px',
@@ -117,9 +122,9 @@ export default props => {
         .set(data)
         .then(res => {
           console.log('res=> ', res);
-          const title = `${userData.question.title}(${ isAdmin ? "답변완료" : "문의"})`;
+          const title = `${userData.question.title}${ isAdmin ? "[답변완료]" : "(문의)"}`;
           db.collection(`board/general/data`).doc(`${userData.uid}`)
-            .update({ isReply: true, title: title})
+            .update({ isReply: true, title: title, questionDate: timestamp})
             .then( res => {
               history.push("/contact");
             })
@@ -151,7 +156,7 @@ export default props => {
         </Paper>
           { reply.length !== 0 ? (
             reply.map((item ,index) => (
-              <Paper className={classes.reply} key={index}>
+              <Paper className={ item.name === "관리자" ? classes.replyAdmin : classes.reply } key={index}>
                 <Typography>{ item.timestamp } by { item.name }</Typography>
                 <pre dangerouslySetInnerHTML={ createMarkup(item.content) } /> 
               </Paper>) 
@@ -216,7 +221,7 @@ export default props => {
           <Button variant="contained" color="primary" onClick={ handleClick } >답글등록</Button>
         </Box> 
       </div> 
-      : <CircularProgress /> }
+      : <Box align="center" p={20} ><CircularProgress /></Box> }
     </div>
   )
 }
