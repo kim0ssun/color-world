@@ -93,7 +93,7 @@ export default props => {
       }) 
       .catch((err) => console.log(err))
 
-  }, []);
+  }, [id, password]);
 
   const createMarkup = (content) => {
     console.log('question.content=> ', content)
@@ -108,7 +108,7 @@ export default props => {
 
   const handleClick = () => {
     console.log('tmpContent: ', tmpCont);
-    if (tmpCont != "") {
+    if (tmpCont !== "") {
       const name = isAdmin ? "관리자" : userData.question.name;
       const timestamp = new Date().toLocaleString();
       const content = tmpCont;

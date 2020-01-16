@@ -7,33 +7,49 @@ import Contact from './Contact';
 import Form from './Form';
 import Reply from './Reply';
 import { Header, Footer, CenteredTabs } from './Layouts';
-import axios from 'axios';
 import firebase from './Firebase';
 
-const storageRef = firebase.storage();
+// const storageRef = firebase.storage();
+const db = firebase.firestore();
 
 function App() {
   const [galleryData, setGalleryData] = useState([]);
   const [flag, setFlag] = useState(false);
 
   // galleryData 형식: { id: index, thumb: url, small: url }
+  useEffect(() => {
 
-  useEffect(()=> {
-   
-    axios.get('https://api.unsplash.com/photos?client_id=1ec565e2ee2f41446d4e3b2e881136cf5337c9cfd65debc28ad8e171d7c3a5ed&&query=airpods&per_page=100')
-      .then( ({ data}) => {
-        const galleryData = data.reduce( (data, { urls }, index) => {
-          return [...data, { ...urls, id: index } ]
-        }, [] );
-        console.log(galleryData)
-        setGalleryData(galleryData);
-      })
-      .catch( err => console.log(err))
+    const unsubscribe = db.collection(`products`).doc('details').get()
+    .then( doc => {
+      let { images } = doc.data();
+
+      /*  업데이트시 데이터 입력
+      const data = {
+          images: tmpData,
+          title: '상품이미지',
+          total: tmpData.length,
+          update: new Date().toLocaleDateString(),
+      }
+      db.collection('products').doc('details').set(data)
+      .then(res => console.log(`products set : ${res}`))
+      */
+     
+      const modifiedImages = images.map( (data, index) =>  {
+        return {
+          ...data, id: index
+        }
+      });
+
+      setGalleryData(modifiedImages);
+        
+    }, err => { console.log(err) })
+
+    return () => unsubscribe();
   }, []);
 
   return (
     <Fragment>
-      
+
       <BrowserRouter>
         <Header />
 
@@ -81,7 +97,7 @@ function App() {
             )
           }} />
         </Switch>
-        { !flag ? <CenteredTabs galleryData={galleryData} /> : null}
+        {!flag ? <CenteredTabs galleryData={galleryData} /> : null}
         <Footer />
       </BrowserRouter>
 
