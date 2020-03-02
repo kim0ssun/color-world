@@ -44,7 +44,6 @@ const useStyles = makeStyles(theme => ({
 
 const VirtualizeSwipeableViews = bindKeyboard(virtualize(SwipeableViews));
 
-
 export default function ImageGridList({ galleryData }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
